@@ -168,9 +168,12 @@ def main():
 
     relativePrimes, oN, n, d, e = RSA(41,61) #p and q
     print("RelativePrimes: ",relativePrimes,"\noN: ", oN,"n: ", n,"d: ", d,"e: ", e,"\n")
-    p = dCheck(2093,oN) #check if e and oN have a relative prime, returns d if found
-    print(p)
-
+    payload = 20
+    print("Starting value" ,payload)
+    payload = encrypt(e, n, payload)
+    print("Encrypted: ",payload)
+    payload = decrypt(d, n, payload)
+    print("Decrypted",payload)
 
 
     #x = "guerangioer323"
