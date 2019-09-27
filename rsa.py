@@ -91,6 +91,7 @@ def RSA(p, q):
     #Fix this retarded structure asap please || finds any relative primes
     #Appends the relative numbers to a list called relativePrimes
     for e in range (2, oN):
+        print("Working out the possible relative Primes...", (e / oN) * 100)
         checkList = []
         result = e / n
         if result.is_integer() == True:
@@ -116,28 +117,31 @@ def RSA(p, q):
         else:
             checkList.append(True)
 
-        if checkList[0] == True and checkList[1] == True and checkList[2] == True and checkList[3] == True:
+
+        if all(checkList): #If all elements are True, e is a relativePrime, save it
             relativePrimes.append(e)
+        #if checkList[0] == True and checkList[1] == True and checkList[2] == True and checkList[3] == True:
+        #    relativePrimes.append(e)
 
 
+    relativePrimes.sort()
     d = False #initiate d with False, so that d has to be found in order to return the variables required
     while d == False:
-        randomNumber = int(random.random() * 1000)
-        d = dCheck(relativePrimes[randomNumber], oN)
+        randomNumber = int(random.random() * len(relativePrimes))
+        d = dCheck(relativePrimes[randomNumber], oN, relativePrimes[-1])
         if d != False: #When d is found, we can return the values needed for encryption and decryption
             return relativePrimes, oN, n, d, int(relativePrimes[randomNumber]) #last value is e!
 
 
 
 #   --> Returns d if found
-#       d can be any number from the relativePrimes list, test some out.
-#       If dCheck returns a number from that relativePrimes list, you can use it for decryption
-#       oN is a fixed value calculated from (p - 1) (p - 1)
-#       e is any a magic number, find one that rules out 1!
-def dCheck(e, oN):
+#       d is any a value between 1 and the biggest relativePrime, that rule out 1 with eulers theorem
+#       oN is a fixed value calculated from (p - 1) (p - 1), used in eulers theorem MODULO
+#       e is a random, relative prime, Relative to p & q 
+def dCheck(e, oN, condition):
 
     i = 1
-    while i < 10000000:
+    while i < condition: #fix this by looping through the biggest number in relativePrimes list
         if((i * e) % oN == 1): #Check if e can be used for d too
             return i
         i += 1
@@ -156,7 +160,7 @@ def main():
 
     lastTime = datetime.datetime.now() #Keep track of time to meassure time between primes
     for c in testList: #Iterate i times, trying to find primes i times in the range of x
-        x = int(random.random() * 101)
+        x = int(random.random() * 10001)
         if isPrime(x) == True:
             print(datetime.datetime.now() - lastTime, " || " ,len(primeList))
             lastTime = datetime.datetime.now()
@@ -166,9 +170,9 @@ def main():
 
 
 
-    relativePrimes, oN, n, d, e = RSA(41,61) #p and q
+    relativePrimes, oN, n, d, e = RSA(19,11) #p and q
     print("RelativePrimes: ",relativePrimes,"\noN: ", oN,"n: ", n,"d: ", d,"e: ", e,"\n")
-    payload = 20
+    payload = 2
     print("Starting value" ,payload)
     payload = encrypt(e, n, payload)
     print("Encrypted: ",payload)
