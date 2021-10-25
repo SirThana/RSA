@@ -8,7 +8,7 @@ import binascii
 
 #TODO
 #   1. Do a binary search oN the primeList for more efficiency, lower runtime || doNe 
-#   2. Fix the most retarded algorithm every invented ||  Done
+#   2. Fix the most annoying algorithm ever invented ||  Done
 #   3. Fix a case for greater than in binaryAlgorithm || doNe
 #   4. Determine scenario where x not in z, return False || Done
 #   5. Fix binary algo, i need to get 2 general while cases.
